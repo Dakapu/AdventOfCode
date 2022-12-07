@@ -5,8 +5,8 @@ var fs = require("fs");
 var data = fs.readFileSync("calories.txt").toString();
 //process the data by splitting the textfile on empty lines and trim whitespaces
 var processedData = data.replace(/\r\n/g, " ").trim().split("  ");
-//initilise most calories variable
-var mostCal = 0;
+//initilise array to store the sum of the fruit of every single elf
+var sumsOfCal = [];
 
 //for each data-set in processedData get the element
 //e.g. 10642 10677 10300 7374 9085 8508 7569 6214
@@ -22,9 +22,15 @@ processedData.forEach((element) => {
     let intItem = parseInt(item);
     //add the item to the sum
     sumCal += intItem;
-    //check if the sum of calories is higher than [currently] most calories - if so: overwrite the value
-    sumCal > mostCal ? (mostCal = sumCal) : "";
   });
+  //stores the sum of the single load of an elf in an array with the others
+  sumsOfCal.push(sumCal);
 });
 
-console.log(mostCal);
+//sort the array in descending order
+var result = sumsOfCal.sort((a, b) => {
+  return b - a;
+});
+
+//add the first three values together could've saved that in a variable first but meh
+console.log(result[0] + result[1] + result[2]);
