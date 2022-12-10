@@ -10,9 +10,13 @@ Strategy Guide
     C = Scissors    3
 
 *Player*
-    X = Loss        0
-    Y = Win         6
-    Z = Draw        3
+    X = Rock        1
+    Y = Paper       2
+    Z = Scissors    3
+
+WIN                 6
+DRAW                3
+LOSS                0
 
 */
 
@@ -30,42 +34,43 @@ var finalScore = 0;
 processedData.forEach((element) => {
   //split every element into an array with two items
   //pair[0] = oponent
-  //pair[1] = outcome
-  let pair = element.replace(" ", "");
+  //pair[1] = player
+  let pair = element.split(" ");
 
-  switch (pair) {
-    case "AX":
-      finalScore += 4;
-      break;
-    case "AY":
-      finalScore += 8;
-      break;
-    case "AZ":
-      finalScore += 3;
-      break;
+  let oponentTool = determineTool(pair[0]);
+  let playerTool = determineTool(pair[1]);
 
-    case "BX":
-      finalScore += 1;
-      break;
-    case "BY":
-      finalScore += 5;
-      break;
-    case "BZ":
-      finalScore += 9;
-      break;
+  if (playerTool > oponentTool) {
+    //WIN
+    console.log("win");
+    finalScore += playerTool + 6;
+  } else if (playerTool == oponentTool) {
+    //DRAW
+    console.log("draw");
+    finalScore += playerTool + 3;
+  } else {
+    //LOSS
+    console.log("loss");
+    finalScore += playerTool;
+  }
 
-    case "CX":
-      finalScore += 7;
-      break;
-    case "CY":
-      finalScore += 2;
-      break;
-    case "CZ":
-      finalScore += 6;
-      break;
+  function determineTool(contestant) {
+    switch (contestant) {
+      //Rock
+      case "A":
+      case "X":
+        return 1;
 
-    default:
-      break;
+      //Paper
+      case "B":
+      case "Y":
+        return 2;
+
+      //Scissors
+      case "C":
+      case "Z":
+        return 3;
+    }
   }
 });
 
