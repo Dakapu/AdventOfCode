@@ -39,53 +39,33 @@ processedData.forEach((element) => {
   //pair[1] = player
   let pair = element.split(" ");
 
-  //initilize currentScore
-  let playerScore = 0;
-  let oponentScore = 0;
+  //initilize Scores
+  let currentScore = 0;
+  //determine playerScore by finding out what tool they used
+  let oponentScore = determineTool(pair[0]);
+  //save oponentScore to pitch it against the player
+  let playerScore = determineTool(pair[1]);
 
-  //TO-DO: Refactor!
-
-  //switch over pairs to calculate score
-  switch (pair[0]) {
-    case "A":
-      //determine playerScore by finding out what tool they used
-      playerScore = determineTool(pair[1]);
-      //save oponentScore to pitch it against the player
-      oponentScore = determineTool(pair[0]);
-      //compare the scores and see who won
-      //if the playerScore is greater than oponent's Score, then add the playerTool plus the outcome to finalscore
-      //if it's a draw add the playerScore and the draw-score
-      playerScore > oponentScore
-        ? (finalScore += playerScore + 6)
-        : playerScore == oponentScore
-        ? (finalScore += playerScore + 3)
-        : finalScore;
-      console.log("Player Score: ", playerScore);
-      console.log("Oponent Score: ", oponentScore);
-      break;
-
-    case "B":
-      playerScore = determineTool(pair[1]);
-      oponentScore = determineTool(pair[0]);
-      playerScore > oponentScore ? (finalScore += playerScore) : finalScore;
-
-      break;
-    case "C":
-      playerScore = determineTool(pair[1]);
-      oponentScore = determineTool(pair[0]);
-      playerScore > oponentScore ? (finalScore += playerScore) : finalScore;
-
-      break;
-
-    default:
-      break;
+  //pitch contestants against each other and see who wins
+  //player won
+  if (playerScore > oponentScore) {
+    currentScore = playerScore + 6;
+    //its a draw
+  } else if (playerScore == oponentScore) {
+    currentScore = playerScore + 3;
+    //player lost
+  } else {
+    currentScore = playerScore;
   }
 
-  //add currentScore to final score
+  //update the final score
+  finalScore += currentScore;
 });
 
-function determineTool(player) {
-  switch (player) {
+console.log("Final Score: ", finalScore);
+
+function determineTool(contestant) {
+  switch (contestant) {
     //use fall-through to cover for the usual "or" statement
     case "X":
     case "A":
@@ -103,5 +83,3 @@ function determineTool(player) {
       break;
   }
 }
-
-console.log("Final Score: ", finalScore);
