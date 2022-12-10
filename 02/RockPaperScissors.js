@@ -10,15 +10,9 @@ Strategy Guide
     C = Scissors    3
 
 *Player*
-    X = Rock        1
-    Y = Paper       2
-    Z = Scissors    3
-
-    
-Win                 6
-Draw                3
-Loss                0
-
+    X = Loss        0
+    Y = Win         6
+    Z = Draw        3
 
 */
 
@@ -36,27 +30,28 @@ var finalScore = 0;
 processedData.forEach((element) => {
   //split every element into an array with two items
   //pair[0] = oponent
-  //pair[1] = player
+  //pair[1] = outcome
   let pair = element.split(" ");
 
   //initilize Scores
-  let currentScore = 0;
-  //determine playerScore by finding out what tool they used
-  let oponentScore = determineTool(pair[0]);
-  //save oponentScore to pitch it against the player
-  let playerScore = determineTool(pair[1]);
 
-  //pitch contestants against each other and see who wins
-  //player won
-  if (playerScore > oponentScore) {
-    currentScore = playerScore + 6;
-    //its a draw
-  } else if (playerScore == oponentScore) {
-    currentScore = playerScore + 3;
-    //player lost
-  } else {
-    currentScore = playerScore;
-  }
+  //save oponentScore to pitch it against the player
+  let oponentTool = determineScore(pair[0]);
+
+  //determine the outcome
+  let outcome = determineScore(pair[1]);
+
+  //determine playerScore by finding out what action to use
+  let playerScore = determinePlayerTool(outcome, oponentTool);
+
+  //get the strategy-guide outcome
+  let currentScore = outcome + playerScore;
+
+  console.log("____");
+  console.log("The outcome SHOULD be: ", pair[1]);
+  console.log("The Oponent Score is: ", oponentTool);
+  console.log("The Player Score is: ", playerScore);
+  console.log("The current score is: ", currentScore);
 
   //update the final score
   finalScore += currentScore;
@@ -64,21 +59,46 @@ processedData.forEach((element) => {
 
 console.log("Final Score: ", finalScore);
 
-function determineTool(contestant) {
+function determineScore(contestant) {
   switch (contestant) {
-    //use fall-through to cover for the usual "or" statement
-    case "X":
+    //Rock
     case "A":
       return 1;
-
-    case "Y":
+    //Paper
     case "B":
       return 2;
-
-    case "Z":
+    //Scissors
     case "C":
       return 3;
 
+    //loss
+    case "X":
+      return 0;
+    //win
+    case "Y":
+      return 6;
+    //draw
+    case "Z":
+      return 3;
+    default:
+      break;
+  }
+}
+
+function determinePlayerTool(currentScore, oponentTool) {
+  switch (currentScore) {
+    //LOSS
+    case 0:
+      //the player needs to be one score below the oponent UNLESS the oponent plays a Rock (1) then the player needs to play Scissors (3)
+      return oponentTool == 1 ? 3 : oponentTool - 1;
+    //DRAW
+    case 3:
+      //since a draw always requires playing the SAME as the oponenet, just add its value
+      return oponentTool;
+    //WIN
+    case 6:
+      //the player needs to be one above the oponent UNLESS the oponent plays Scissors (3), then the player needs to play Rock (1)
+      return oponentTool == 3 ? 1 : oponentTool + 1;
     default:
       break;
   }
