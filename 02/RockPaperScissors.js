@@ -34,35 +34,21 @@ var finalScore = 0;
 processedData.forEach((element) => {
   //split every element into an array with two items
   //pair[0] = oponent
-  //pair[1] = player
+  //pair[1] = outcome
   let pair = element.split(" ");
-  let currentScore = 0;
+
+  let outcome = determineTool(pair[1]);
   let oponentTool = determineTool(pair[0]);
-  let playerTool = determineTool(pair[1]);
 
-  console.log("________");
+  let playerScore = determinePlayerTool(outcome, oponentTool);
+
+  console.log("_______");
   console.log("FIGHT!");
-  console.log("Player: ", playerTool, " Oponent: ", oponentTool);
+  console.log("Desired outcome: ", outcome);
+  console.log("Oponent: ", oponentTool, "Player: ", playerScore);
+  console.log("Current Score: ", playerScore + outcome);
 
-  //determine the winner
-  if (
-    (playerTool > oponentTool || (playerTool == 1 && oponentTool == 3)) &&
-    !(playerTool == 3 && oponentTool == 1)
-  ) {
-    //WIN
-    currentScore = playerTool + 6;
-    console.log("WIN! Current score: ", currentScore);
-  } else if (playerTool == oponentTool) {
-    //DRAW
-    currentScore = playerTool + 3;
-    console.log("DRAW! Current score: ", currentScore);
-  } else {
-    //LOSS
-    currentScore += playerTool;
-    console.log("LOSS! Current score: ", currentScore);
-  }
-
-  finalScore += currentScore;
+  finalScore += outcome + playerScore;
 });
 
 function determineTool(contestant) {
@@ -70,19 +56,46 @@ function determineTool(contestant) {
     //define tool with fallthrough cases
     //Rock
     case "A":
-    case "X":
       return 1;
 
     //Paper
     case "B":
-    case "Y":
       return 2;
 
     //Scissors
     case "C":
-    case "Z":
       return 3;
+
+    //LOSS
+    case "X":
+      return 0;
+
+    //DRAW
+    case "Y":
+      return 3;
+
+    //WIN
+    case "Z":
+      return 6;
   }
 }
 
+function determinePlayerTool(currentScore, oponentTool) {
+  switch (currentScore) {
+    //LOSS
+    case 0:
+      //the player needs to be one score below the oponent UNLESS the oponent plays a Rock (1) then the player needs to play Scissors (3)
+      return oponentTool == 1 ? 3 : oponentTool - 1;
+    //DRAW
+    case 3:
+      //since a draw always requires playing the SAME as the oponenet, just add its value
+      return oponentTool;
+    //WIN
+    case 6:
+      //the player needs to be one above the oponent UNLESS the oponent plays Scissors (3), then the player needs to play Rock (1)
+      return oponentTool == 3 ? 1 : oponentTool + 1;
+    default:
+      break;
+  }
+}
 console.log(finalScore);
