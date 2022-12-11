@@ -36,42 +36,53 @@ processedData.forEach((element) => {
   //pair[0] = oponent
   //pair[1] = player
   let pair = element.split(" ");
-
+  let currentScore = 0;
   let oponentTool = determineTool(pair[0]);
   let playerTool = determineTool(pair[1]);
 
-  if (playerTool > oponentTool) {
+  console.log("________");
+  console.log("FIGHT!");
+  console.log("Player: ", playerTool, " Oponent: ", oponentTool);
+
+  //determine the winner
+  if (
+    (playerTool > oponentTool || (playerTool == 1 && oponentTool == 3)) &&
+    !(playerTool == 3 && oponentTool == 1)
+  ) {
     //WIN
-    console.log("win");
-    finalScore += playerTool + 6;
+    currentScore = playerTool + 6;
+    console.log("WIN! Current score: ", currentScore);
   } else if (playerTool == oponentTool) {
     //DRAW
-    console.log("draw");
-    finalScore += playerTool + 3;
+    currentScore = playerTool + 3;
+    console.log("DRAW! Current score: ", currentScore);
   } else {
     //LOSS
-    console.log("loss");
-    finalScore += playerTool;
+    currentScore += playerTool;
+    console.log("LOSS! Current score: ", currentScore);
   }
 
-  function determineTool(contestant) {
-    switch (contestant) {
-      //Rock
-      case "A":
-      case "X":
-        return 1;
-
-      //Paper
-      case "B":
-      case "Y":
-        return 2;
-
-      //Scissors
-      case "C":
-      case "Z":
-        return 3;
-    }
-  }
+  finalScore += currentScore;
 });
+
+function determineTool(contestant) {
+  switch (contestant) {
+    //define tool with fallthrough cases
+    //Rock
+    case "A":
+    case "X":
+      return 1;
+
+    //Paper
+    case "B":
+    case "Y":
+      return 2;
+
+    //Scissors
+    case "C":
+    case "Z":
+      return 3;
+  }
+}
 
 console.log(finalScore);
