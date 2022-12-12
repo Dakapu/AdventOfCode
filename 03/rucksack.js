@@ -2,8 +2,19 @@
 var fs = require("fs");
 
 //get data from external textfile
-var data = fs.readFileSync("input.txt").toString();
+var data = fs.readFileSync("example.txt").toString();
 var processedData = data.split(/\r\n/g);
+
+//Split data into chunks of three
+const chunkSize = 3;
+
+//loop through processed data and form arrays of 3 with each cycle
+for (let i = 0; i < processedData.length; i += chunkSize) {
+  //form array dependent on chunk size
+  const chunk = processedData.slice(i, i + chunkSize);
+
+  console.log(chunk);
+}
 
 var result = 0;
 
