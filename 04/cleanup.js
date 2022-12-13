@@ -24,8 +24,8 @@ processedData.forEach((cleaningPair) => {
 
   //compare the two workloads if either is contained in the other and if so increase doubles
   if (
-    (firstElfStart <= secondElfStart && firstElfFinish >= secondElfFinish) ||
-    (firstElfStart >= secondElfStart && firstElfFinish <= secondElfFinish)
+    (firstElfStart <= secondElfStart && firstElfFinish >= secondElfStart) ||
+    (secondElfStart <= firstElfStart && secondElfFinish >= firstElfStart)
   ) {
     doubles++;
   }
