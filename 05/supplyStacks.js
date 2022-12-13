@@ -9,14 +9,9 @@ example:
 [N] [C]    
 [Z] [M] [P]
  1   2   3 
+*/
 
- let container = [
-    [N,Z],
-    [D,C,M],
-    [P]
- ]
-
- */
+let container = [["N", "Z"], ["D", "C", "M"], ["P"]];
 
 /*
 
@@ -33,21 +28,29 @@ input
  1   2   3   4   5   6   7   8   9 
 
 
+let container = [
+  ['N', 'H', 'S', 'J', 'F', 'W', 'T', 'D'],
+  ['G', 'B', 'N', 'T', 'Q', 'P', 'R', 'H'],
+  ['V', 'Q', 'L'],
+  ['Q', 'R', 'W', 'S', 'B', 'N'],
+  ['B', 'M', 'V', 'T', 'F', 'D', 'N'],
+  ['R', 'T', 'H', 'V', 'B', 'D', 'M'],
+  ['J', 'Q', 'B', 'D'],
+  ['Q', 'H', 'Z', 'R', 'V', 'J', 'N', 'D'],
+  ['S', 'M', 'H', 'N', 'B'],
+];
 
 */
 
-let container = [
-  [N, H, S, J, F, W, T, D],
-  [G, B, N, T, Q, P, R, H],
-  [V, Q, L],
-  [Q, R, W, S, B, N],
-  [B, M, V, T, F, D, N],
-  [R, T, H, V, B, D, M],
-  [J, Q, B, D],
-  [Q, H, Z, R, V, J, N, D],
-  [S, M, H, N, B],
-];
-
 //get data from external textfile
-var data = fs.readFileSync("input.txt").toString();
+var data = fs.readFileSync("example.txt").toString();
 var processedData = data.split(/\r\n/g);
+
+//command text example: move 1 from 2 to 1
+
+processedData.forEach((command) => {
+  //remove words/whitespaces from commands
+  let regex = /(move)|(from)|(to)|( )/g;
+  //Save commands as array
+  let step = [...command.replaceAll(regex, "")];
+});
